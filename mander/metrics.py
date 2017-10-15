@@ -59,7 +59,6 @@ Competitiveness is defined here as the number of districts that
 have a partisan index (democratic or republican) that falls within
 a desired range of .5 (by default).
 
-This calculator only operates on Plans.
 """
 def competitiveness(plan, range=0.5):
     """
@@ -94,4 +93,24 @@ def competitiveness(plan, range=0.5):
             fair += 1
 
     return fair
+
+
+"""
+This calculator determines how many times a district splits a given collection of features.
+"""
+def count_splits(district, features):
+    """
+    Calculate splits between a district and other features.
+
+    @keyword district: A L{District} whose splits should be computed.
+    @keyword boundary_id: The ID of the geolevel to compare for splits.
+    """
+    if district.geom.empty:
+        return
+    # https://toblerity.org/shapely/manual.html#de-9im-relationships
+    #todo: https://en.wikipedia.org/wiki/DE-9IM
+    #'***T*****'
+    num_splits = -1
+
+    return num_splits
 
