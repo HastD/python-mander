@@ -98,7 +98,7 @@ def competitiveness(plan, range=0.5):
 """
 This calculator determines how many times a district splits a given collection of features.
 """
-def count_splits(district, features):
+def count_splits(district, features, overlap_threshold=0.01):
     """
     Calculate splits between a district and other features.
 
@@ -106,16 +106,18 @@ def count_splits(district, features):
     @keyword boundary_id: The ID of the geolevel to compare for splits.
     """
     dist_geom = district.geometry
-    if dist_geom.empty:
-        return 0
+    # Make sure coordinate reference systems match up
+    features = features.to_crs(dist_geom.crs)
     # https://toblerity.org/shapely/manual.html#de-9im-relationships
     #todo: https://en.wikipedia.org/wiki/DE-9IM
     #'***T*****'
     num_splits = 0
     for section in dist_geom:
         for g in features:
-            if section.relate(g)[3] != "F":
-                num_splits += 1
-
+            relation = section.relate(g)
+            if relation[3] != "F":
+                overlap = section.intersection(g).area / g.area
+                if overlap_threshold <= overlap <= 1 - overlap_threshold:
+                    num_splits += 1
     return num_splits
 
