@@ -29,8 +29,8 @@ def representational_fairness(plan):
     reps = 0
     for district in districts:
         #hardcoded attributes for now
-        dem = district.democratic
-        rep = district.republican
+        dem = district.dem_votes
+        rep = district.rep_votes
         if dem is None or rep is None:
             continue
 
@@ -77,8 +77,8 @@ def competitiveness(plan, range=0.5):
         if district.district_id == 0:
             continue
 
-        tmpdem = district.democratic
-        tmprep = district.republican
+        tmpdem = district.dem_votes
+        tmprep = district.rep_votes
 
         if tmpdem is None or tmprep is None:
             continue
