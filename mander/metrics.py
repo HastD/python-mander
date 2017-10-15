@@ -105,12 +105,17 @@ def count_splits(district, features):
     @keyword district: A L{District} whose splits should be computed.
     @keyword boundary_id: The ID of the geolevel to compare for splits.
     """
-    if district.geom.empty:
-        return
+    dist_geom = district.geometry
+    if dist_geom.empty:
+        return 0
     # https://toblerity.org/shapely/manual.html#de-9im-relationships
     #todo: https://en.wikipedia.org/wiki/DE-9IM
     #'***T*****'
-    num_splits = -1
+    num_splits = 0
+    for section in dist_geom:
+        for g in features:
+            if section.relate(g)[3] != "F":
+                num_splits += 1
 
     return num_splits
 
